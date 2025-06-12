@@ -18,7 +18,7 @@
             min-height: 100vh;
             direction: rtl !important;
             box-sizing: border-box;
-            display: flex; /* Ensure body takes full height for content distribution */
+            display: flex;
             flex-direction: column;
         }
 
@@ -36,6 +36,7 @@
             padding: 0 1rem;
             display: flex;
             align-items: center;
+            /* Changed justify-content to space-between to push items to edges */
             justify-content: space-between;
             color: white;
             position: sticky;
@@ -63,37 +64,36 @@
             background-color: rgba(255, 255, 255, 0.25);
             transform: scale(1.05);
         }
-        .top-bar-title { /* Renamed for clarity */
+        .top-bar-title {
             font-weight: 700;
-            flex-grow: 1;
+            flex-grow: 1; /* Allow title to take available space */
             text-align: center;
         }
         /* === End: Top Bar Styles === */
 
         /* === Start: Common Content Wrapper Styles === */
-        /* This wrapper will apply consistent horizontal padding and vertical margins */
         .content-section {
-            padding-left: 10px; /* 10px from left */
-            padding-right: 10px; /* 10px from right */
+            padding-left: 10px;
+            padding-right: 10px;
             box-sizing: border-box;
-            width: 100%; /* Take full width and apply padding */
-            margin-left: auto; /* Center if max-width is applied later */
-            margin-right: auto; /* Center if max-width is applied later */
+            width: 100%;
+            margin-left: auto;
+            margin-right: auto;
         }
 
         /* Adjusting vertical margins for specific elements */
         .account-data-container {
-            margin-top: 10px; /* 10px gap after top bar */
-            margin-bottom: 10px; /* 10px gap before services grid */
+            margin-top: 10px;
+            margin-bottom: 10px;
         }
         .service-grid-container {
-            padding-bottom: 15px; /* Added some padding at bottom for content comfort */
+            padding-bottom: 15px;
         }
 
         /* === Start: Account Data Specific Styles === */
         .account-data-card {
-            background-color: white; /* Added white background for the data card */
-            border-radius: 8px; /* All corners 8px */
+            background-color: white;
+            border-radius: 8px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.05);
             padding: 1rem;
         }
@@ -101,25 +101,25 @@
 
         /* === Start: Service Button Styles === */
         .service-button {
-            background-color: white; /* Changed to white */
-            color: #000000; /* Black text */
+            background-color: white;
+            color: #000000;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             text-align: center;
             text-decoration: none;
-            padding: 0.5rem; /* Original padding for service buttons */
-            border-radius: 8px; /* All corners 8px */
-            border: 1px solid #e5e7eb; /* gray-200 */
+            padding: 0.5rem;
+            border-radius: 8px;
+            border: 1px solid #e5e7eb;
             aspect-ratio: 1 / 1;
             transition: all 0.2s ease-in-out;
-            white-space: nowrap; /* Prevent text wrapping */
-            overflow: hidden; /* Hide overflow text */
-            text-overflow: ellipsis; /* Add ellipsis for overflow text */
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
         .service-button:hover {
-            border-color: #147ad6; /* Primary blue on hover */
+            border-color: #147ad6;
             transform: translateY(-4px);
             box-shadow: 0 8px 15px rgba(0, 0, 0, 0.07);
         }
@@ -128,20 +128,20 @@
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
         }
         .service-icon {
-            font-size: 1.5rem; /* Original size */
-            margin-bottom: 0.2rem; /* Reduced to move text up/down */
-            color: #147ad6; /* Primary blue for icons */
+            font-size: 1.5rem;
+            margin-bottom: 0.2rem;
+            color: #147ad6;
         }
         .service-text {
             font-weight: 600;
-            font-size: 0.875rem; /* Original size */
+            font-size: 0.875rem;
             line-height: 1.2;
             color: #000000 !important;
-            padding-top: 0.1rem; /* New property to move text down */
-            height: auto; /* Let content define height */
+            padding-top: 0.1rem;
+            height: auto;
         }
         .service-grid {
-            gap: 0.75rem; /* Slightly reduced gap */
+            gap: 0.75rem;
         }
         /* === End: Service Button Styles === */
 
@@ -151,7 +151,7 @@
             inset: 0;
             background-color: rgba(0, 0, 0, 0.6);
             display: flex;
-            align-items: flex-end; /* Slide up from bottom */
+            align-items: flex-end;
             justify-content: center;
             z-index: 1000;
             transition: opacity 0.3s ease, visibility 0.3s ease;
@@ -165,13 +165,13 @@
         .popup-content {
             background-color: white;
             width: 100%;
-            height: 100%; /* Full screen height */
+            height: 100%;
             display: flex;
             flex-direction: column;
             transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             transform: translateY(100%);
-            border-top-left-radius: 8px; /* Rounded top corners */
-            border-top-right-radius: 8px; /* Rounded top corners */
+            border-top-left-radius: 8px;
+            border-top-right-radius: 8px;
         }
         .popup-overlay.active .popup-content {
             transform: translateY(0);
@@ -183,7 +183,7 @@
             width: 50px;
             height: 50px;
             border: 5px solid #e0e0e0;
-            border-top: 5px solid #147ad6; /* Primary blue for loader */
+            border-top: 5px solid #147ad6;
             border-radius: 50%;
             animation: spin 0.8s linear infinite;
         }
@@ -194,7 +194,7 @@
             inset: 0;
             background-color: rgba(255, 255, 255, 0.9);
             z-index: 9999;
-            display: none; /* Controlled by JS */
+            display: none;
             align-items: center;
             justify-content: center;
             flex-direction: column;
@@ -204,7 +204,7 @@
             visibility: hidden;
         }
         #loading-overlay.active {
-            display: flex; /* Make sure it's flex when active */
+            display: flex;
             opacity: 1;
             visibility: visible;
         }
@@ -214,15 +214,15 @@
 <body>
 
 <div class="top-bar">
-    <div class="icon-container" id="notificationIcon">
-        <i class="fas fa-bell"></i>
-    </div>
-    <div class="top-bar-title">
-        <span> الحساب</span>
-    </div>
     <a href="#" onclick="history.back(); return false;" class="icon-container">
         <i class="fas fa-arrow-right"></i>
     </a>
+    <div class="top-bar-title">
+        <span> الحساب</span>
+    </div>
+    <div class="icon-container" id="notificationIcon">
+        <i class="fas fa-bell"></i>
+    </div>
 </div>
 
 <div class="content-section account-data-container">
@@ -315,7 +315,7 @@
         </button>
         <a href="/fees-link" class="service-button">
             <i class="fas fa-percent service-icon"></i>
-            <span class="service-text"> العمولات</span>
+            <span class="service-text">العمولات</span>
         </a>
         <button id="printer-btn" class="service-button">
             <i class="fas fa-print service-icon"></i>
@@ -358,6 +358,20 @@
         <div class="flex-grow flex flex-col items-center justify-center text-center p-6">
             <div class="loader mx-auto mb-5"></div>
             <p class="text-lg font-semibold text-gray-700">جاري البحث...</p>
+        </div>
+    </div>
+</div>
+
+<div class="popup-overlay" id="notificationModal">
+    <div class="popup-content">
+        <div class="flex justify-between items-center p-4 border-b">
+            <h2 class="text-xl font-bold">الإشعارات</h2>
+            <button id="closeNotificationModal" class="text-2xl text-gray-700">×</button>
+        </div>
+        <div class="flex-grow flex flex-col items-center justify-center p-6 text-center">
+            <i class="fas fa-bell-slash text-gray-400 text-6xl mb-4"></i>
+            <p class="text-gray-600 text-xl">لا توجد إشعارات حالياً</p>
+            <p class="text-gray-500 mt-2">سيتم إعلامك عند وصول إشعارات جديدة</p>
         </div>
     </div>
 </div>
@@ -414,12 +428,17 @@
         setInterval(updateDateTime, 1000);
         updateDateTime();
 
-        // --- Popup Management ---
+        // --- Popup Management (General Message, Printer, and Notification) ---
         const messagePopup = document.getElementById('message-popup');
         const popupMessage = document.getElementById('popup-message');
         const popupTitle = document.getElementById('popup-title');
         const popupIconContainer = document.getElementById('popup-icon-container');
         const printerPopup = document.getElementById('printer-popup');
+
+        const notificationIcon = document.getElementById('notificationIcon');
+        const notificationModal = document.getElementById('notificationModal');
+        const closeNotificationModal = document.getElementById('closeNotificationModal');
+
 
         const iconMap = {
             error: '<i class="fas fa-times-circle text-4xl text-red-500"></i>',
@@ -444,6 +463,28 @@
             btn.addEventListener('click', closeAllPopups);
         });
 
+        // Event listener for Notification Icon to open Notification Modal
+        if (notificationIcon && notificationModal) {
+            notificationIcon.addEventListener('click', () => {
+                notificationModal.classList.add('active');
+            });
+        }
+        // Event listener for closing Notification Modal
+        if (closeNotificationModal && notificationModal) {
+            closeNotificationModal.addEventListener('click', () => {
+                notificationModal.classList.remove('active');
+            });
+        }
+        // Close Notification modal when clicking outside content
+        if (notificationModal) {
+            notificationModal.addEventListener('click', (e) => {
+                if (e.target === notificationModal) {
+                    notificationModal.classList.remove('active');
+                }
+            });
+        }
+
+
         // --- Service Button Event Listeners ---
         document.getElementById('withdraw-btn').addEventListener('click', () => showMessage('خطأ في السحب', 'لا يوجد رصيد كافي للسحب', 'error'));
         document.getElementById('reports-btn').addEventListener('click', () => showMessage('التقارير', 'لا يوجد تقارير حالياً', 'info'));
@@ -461,18 +502,18 @@
         });
 
         // Handle direct link service buttons with loading overlay
-        const serviceButtons = document.querySelectorAll('.service-grid .service-button[href]:not([id])'); // Target only direct links
+        const serviceButtons = document.querySelectorAll('.service-grid .service-button[href]:not([id])');
         const loadingOverlay = document.getElementById('loading-overlay');
 
         serviceButtons.forEach(button => {
             button.addEventListener('click', function(event) {
                 const url = this.getAttribute('href');
-                if (url && url !== '#' && url !== 'javascript:void(0);') { // Ensure it's a valid navigation link
-                    event.preventDefault(); // Prevent immediate navigation
-                    loadingOverlay.classList.add('active'); // Show loading overlay
+                if (url && url !== '#' && url !== 'javascript:void(0);') {
+                    event.preventDefault();
+                    loadingOverlay.classList.add('active');
                     setTimeout(() => {
-                        window.location.href = url; // Navigate after delay
-                    }, 250); // 250ms delay
+                        window.location.href = url;
+                    }, 250);
                 }
             });
         });
