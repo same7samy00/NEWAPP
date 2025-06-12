@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>صفحة الحساب والخدمات</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&amp;display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* === Start: Global & Body Styles === */
+        body {
+            font-family: 'Cairo', sans-serif;
+            background-color: #f0f4f8;
+            color: #1f2937;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            direction: rtl !important;
+            box-sizing: border-box;
+            display: flex; /* Ensure body takes full height for content distribution */
+            flex-direction: column;
+        }
+
+        /* === Start: Custom Colors & Overrides === */
+        .bg-primary-blue { background-color: #147ad6; }
+        .text-primary-blue { color: #147ad6; }
+        .border-primary-blue { border-color: #147ad6; }
+        .hover\:bg-primary-blue-dark:hover { background-color: #1066b3; }
+
+        /* === Start: Top Bar Styles === */
+        .top-bar {
+            background-color: #147ad6;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            height: 60px;
+            padding: 0 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            color: white;
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            width: 100%;
+            border-bottom-left-radius: 8px; /* Rounded bottom corners */
+            border-bottom-right-radius: 8px; /* Rounded bottom corners */
+        }
+        .icon-container {
+            background-color: rgba(255, 255, 255, 0.15);
+            border-radius: 8px; /* All corners 8px */
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white !important;
+            text-decoration: none;
+            flex-shrink: 0;
+        }
+        .icon-container:hover {
+            background-color: rgba(255, 255, 255, 0.25);
+            transform: scale(1.05);
+        }
+        .top-bar-title { /* Renamed for clarity */
+            font-weight: 700;
+            flex-grow: 1;
+            text-align: center;
+        }
+        /* === End: Top Bar Styles === */
+
+        /* === Start: Common Content Wrapper Styles === */
+        /* This wrapper will apply consistent horizontal padding and vertical margins */
+        .content-section {
+            padding-left: 10px; /* 10px from left */
+            padding-right: 10px; /* 10px from right */
+            box-sizing: border-box;
+            width: 100%; /* Take full width and apply padding */
+            margin-left: auto; /* Center if max-width is applied later */
+            margin-right: auto; /* Center if max-width is applied later */
+        }
+
+        /* Adjusting vertical margins for specific elements */
+        .account-data-container {
+            margin-top: 10px; /* 10px gap after top bar */
+            margin-bottom: 10px; /* 10px gap before services grid */
+        }
+        .service-grid-container {
+            padding-bottom: 15px; /* Added some padding at bottom for content comfort */
+        }
+
+        /* === Start: Account Data Specific Styles === */
+        .account-data-card {
+            background-color: white; /* Added white background for the data card */
+            border-radius: 8px; /* All corners 8px */
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            padding: 1rem;
+        }
+        /* === End: Account Data Specific Styles === */
+
+        /* === Start: Service Button Styles === */
+        .service-button {
+            background-color: white; /* Changed to white */
+            color: #000000; /* Black text */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            text-decoration: none;
+            padding: 0.5rem; /* Original padding for service buttons */
+            border-radius: 8px; /* All corners 8px */
+            border: 1px solid #e5e7eb; /* gray-200 */
+            aspect-ratio: 1 / 1;
+            transition: all 0.2s ease-in-out;
+            white-space: nowrap; /* Prevent text wrapping */
+            overflow: hidden; /* Hide overflow text */
+            text-overflow: ellipsis; /* Add ellipsis for overflow text */
+        }
+        .service-button:hover {
+            border-color: #147ad6; /* Primary blue on hover */
+            transform: translateY(-4px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.07);
+        }
+        .service-button:active {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+        }
+        .service-icon {
+            font-size: 1.5rem; /* Original size */
+            margin-bottom: 0.2rem; /* Reduced to move text up/down */
+            color: #147ad6; /* Primary blue for icons */
+        }
+        .service-text {
+            font-weight: 600;
+            font-size: 0.875rem; /* Original size */
+            line-height: 1.2;
+            color: #000000 !important;
+            padding-top: 0.1rem; /* New property to move text down */
+            height: auto; /* Let content define height */
+        }
+        .service-grid {
+            gap: 0.75rem; /* Slightly reduced gap */
+        }
+        /* === End: Service Button Styles === */
+
+        /* === Start: Popup / Modal Styles (Full Screen) === */
+        .popup-overlay {
+            position: fixed;
+            inset: 0;
+            background-color: rgba(0, 0, 0, 0.6);
+            display: flex;
+            align-items: flex-end; /* Slide up from bottom */
+            justify-content: center;
+            z-index: 1000;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+            opacity: 0;
+            visibility: hidden;
+        }
+        .popup-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        .popup-content {
+            background-color: white;
+            width: 100%;
+            height: 100%; /* Full screen height */
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transform: translateY(100%);
+            border-top-left-radius: 8px; /* Rounded top corners */
+            border-top-right-radius: 8px; /* Rounded top corners */
+        }
+        .popup-overlay.active .popup-content {
+            transform: translateY(0);
+        }
+        /* === End: Popup / Modal Styles === */
+
+        /* === Start: Loader Styles === */
+        .loader {
+            width: 50px;
+            height: 50px;
+            border: 5px solid #e0e0e0;
+            border-top: 5px solid #147ad6; /* Primary blue for loader */
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        #loading-overlay {
+            position: fixed;
+            inset: 0;
+            background-color: rgba(255, 255, 255, 0.9);
+            z-index: 9999;
+            display: none; /* Controlled by JS */
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            gap: 1rem;
+            transition: opacity 0.2s ease;
+            opacity: 0;
+            visibility: hidden;
+        }
+        #loading-overlay.active {
+            display: flex; /* Make sure it's flex when active */
+            opacity: 1;
+            visibility: visible;
+        }
+        /* === End: Loader Styles === */
+    </style>
+</head>
+<body>
+
+<div class="top-bar">
+    <div class="icon-container" id="notificationIcon">
+        <i class="fas fa-bell"></i>
+    </div>
+    <div class="top-bar-title">
+        <span>بيانات الحساب</span>
+    </div>
+    <a href="#" onclick="history.back(); return false;" class="icon-container">
+        <i class="fas fa-arrow-right"></i>
+    </a>
+</div>
+
+<div class="content-section account-data-container">
+    <div class="account-data-card text-gray-800">
+        <div class="flex justify-around text-center mb-4">
+            <div>
+                <span class="text-xs text-gray-500">الرصيد</span>
+                <p class="text-lg font-bold">00.00</p>
+            </div>
+            <div>
+                <span class="text-xs text-gray-500">آجل شركة</span>
+                <p class="text-lg font-bold">00.00</p>
+            </div>
+            <div>
+                <span class="text-xs text-gray-500">أجل وكيل</span>
+                <p class="text-lg font-bold">00.00</p>
+            </div>
+        </div>
+        <div class="space-y-3 text-sm">
+            <div class="flex justify-between items-center">
+                <span class="font-semibold">المحل :</span>
+                <span class="font-mono text-gray-600">NAN</span>
+            </div>
+            <div class="flex justify-between items-center">
+                <span class="font-semibold">الكود :</span>
+                <span id="user-code" class="font-mono bg-gray-100 text-gray-700 px-2 py-0.5 rounded-md text-xs"></span>
+            </div>
+            <div class="flex justify-between items-center">
+                <span class="font-semibold">السيريال :</span>
+                <span id="user-serial" class="font-mono text-gray-500 text-xs"></span>
+            </div>
+            <div class="flex justify-between items-center">
+                <span class="font-semibold">نوع الحساب :</span>
+                <span class="bg-green-100 text-green-800 px-2 py-0.5 rounded-md text-xs font-bold">حساب تاجر</span>
+            </div>
+            <div class="flex justify-between items-center">
+                <span class="font-semibold">اصدار :</span>
+                <span>v10.06.08</span>
+            </div>
+            <div class="flex justify-between items-center">
+                <span class="font-semibold">التاريخ :</span>
+                <span id="current-date"></span>
+            </div>
+            <div class="flex justify-between items-center">
+                <span class="font-semibold">الوقت :</span>
+                <span id="current-time"></span>
+            </div>
+        </div>
+        <div class="grid grid-cols-4 gap-2 text-center p-2 pt-4">
+            <div><p class="font-bold text-base">0</p><span class="text-gray-500 text-[10px] leading-tight block">عمليات معلقة</span></div>
+            <div><p class="font-bold text-base">0</p><span class="text-gray-500 text-[10px] leading-tight block">عمليات مرفوضة</span></div>
+            <div><p class="font-bold text-base">0</p><span class="text-gray-500 text-[10px] leading-tight block">رصيد معلق</span></div>
+            <div><p class="font-bold text-base">0</p><span class="text-gray-500 text-[10px] leading-tight block">رصيد مرتجع</span></div>
+            <div><p class="font-bold text-base">0</p><span class="text-gray-500 text-[10px] leading-tight block">عملاء الشجرة</span></div>
+            <div><p class="font-bold text-base">0</p><span class="text-gray-500 text-[10px] leading-tight block">طلبات</span></div>
+            <div><p class="font-bold text-base">0</p><span class="text-gray-500 text-[10px] leading-tight block">بلاغات</span></div>
+        </div>
+    </div>
+</div>
+
+<div class="content-section service-grid-container">
+    <div class="grid grid-cols-4 service-grid">
+        <a href="/deposit-link" class="service-button">
+            <i class="fas fa-wallet service-icon"></i>
+            <span class="service-text">إيداع</span>
+        </a>
+        <button id="withdraw-btn" class="service-button">
+            <i class="fas fa-hand-holding-dollar service-icon"></i>
+            <span class="service-text">سحب</span>
+        </button>
+        <button id="reports-btn" class="service-button">
+            <i class="fas fa-chart-pie service-icon"></i>
+            <span class="service-text">التقارير</span>
+        </button>
+        <button id="transactions-btn" class="service-button">
+            <i class="fas fa-receipt service-icon"></i>
+            <span class="service-text">المعاملات</span>
+        </button>
+        <button id="tree-btn" class="service-button">
+            <i class="fas fa-sitemap service-icon"></i>
+            <span class="service-text">شجرتي</span>
+        </button>
+        <button id="loan-btn" class="service-button">
+            <i class="fas fa-handshake-angle service-icon"></i>
+            <span class="service-text">سلفني</span>
+        </button>
+        <button id="deposits-history-btn" class="service-button">
+            <i class="fas fa-download service-icon"></i>
+            <span class="service-text">الإيداعات</span>
+        </button>
+        <a href="/fees-link" class="service-button">
+            <i class="fas fa-percent service-icon"></i>
+            <span class="service-text">الرسوم والعمولات</span>
+        </a>
+        <button id="printer-btn" class="service-button">
+            <i class="fas fa-print service-icon"></i>
+            <span class="service-text">طابعة</span>
+        </button>
+        <a href="/support-link" class="service-button">
+            <i class="fas fa-headset service-icon"></i> <span class="service-text">الدعم</span>
+        </a>
+        <a href="/my-data-link" class="service-button">
+            <i class="fas fa-id-card service-icon"></i>
+            <span class="service-text">بياناتي</span>
+        </a>
+        <a href="/logout-link" class="service-button">
+            <i class="fas fa-right-from-bracket service-icon"></i>
+            <span class="service-text">تسجيل خروج</span>
+        </a>
+    </div>
+</div>
+
+<div id="message-popup" class="popup-overlay fixed inset-0 z-50 flex flex-col items-center justify-end opacity-0 invisible">
+    <div class="popup-content bg-white w-full h-full flex flex-col">
+        <div class="flex justify-between items-center p-4 border-b">
+            <h2 id="popup-title" class="text-lg font-bold text-gray-800">تنبيه</h2>
+            <button class="popup-close-btn text-gray-500 text-2xl hover:text-gray-800">×</button>
+        </div>
+        <div class="flex-grow flex flex-col items-center justify-center text-center p-6">
+            <div id="popup-icon-container" class="mb-5">
+                </div>
+            <h3 id="popup-message" class="text-lg font-bold text-gray-800"></h3>
+        </div>
+    </div>
+</div>
+
+<div id="printer-popup" class="popup-overlay fixed inset-0 z-50 flex flex-col items-center justify-end opacity-0 invisible">
+    <div class="popup-content bg-white w-full h-full flex flex-col">
+        <div class="flex justify-between items-center p-4 border-b">
+            <h2 class="text-lg font-bold text-gray-800">البحث عن طابعة</h2>
+            <button class="popup-close-btn text-gray-500 text-2xl hover:text-gray-800">×</button>
+        </div>
+        <div class="flex-grow flex flex-col items-center justify-center text-center p-6">
+            <div class="loader mx-auto mb-5"></div>
+            <p class="text-lg font-semibold text-gray-700">جاري البحث...</p>
+        </div>
+    </div>
+</div>
+
+<div id="loading-overlay">
+    <div class="loader"></div>
+    <p class="text-xl font-bold text-gray-500">جاري المعالجة...</p>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // --- Functions for User Code and Serial ---
+        function getOrGenerateUserCode() {
+            const storageKey = 'userInfo_userCode';
+            let code = localStorage.getItem(storageKey);
+            if (!code) {
+                code = Math.floor(100000 + Math.random() * 900000);
+                localStorage.setItem(storageKey, code);
+            }
+            return code;
+        }
+        function getOrGenerateUserSerial() {
+            const storageKey = 'userInfo_userSerial';
+            let serial = localStorage.getItem(storageKey);
+            if (!serial) {
+                serial = [...Array(16)].map(() => Math.floor(Math.random() * 16).toString(16)).join('');
+                localStorage.setItem(storageKey, serial);
+            }
+            return serial;
+        }
+        const codeElement = document.getElementById('user-code');
+        if (codeElement) {
+            codeElement.textContent = getOrGenerateUserCode();
+        }
+        const serialElement = document.getElementById('user-serial');
+        if (serialElement) {
+            serialElement.textContent = getOrGenerateUserSerial();
+        }
+
+        // --- Function to Update Date and Time ---
+        const dateElement = document.getElementById('current-date');
+        const timeElement = document.getElementById('current-time');
+        function updateDateTime() {
+            const now = new Date();
+            const dateOptions = { year: 'numeric', month: 'long', day: 'numeric' };
+            const timeOptions = { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true };
+            if (dateElement) {
+                dateElement.textContent = now.toLocaleDateString('ar-EG', dateOptions);
+            }
+            if (timeElement) {
+                timeElement.textContent = now.toLocaleTimeString('ar-EG', timeOptions);
+            }
+        }
+        setInterval(updateDateTime, 1000);
+        updateDateTime();
+
+        // --- Popup Management ---
+        const messagePopup = document.getElementById('message-popup');
+        const popupMessage = document.getElementById('popup-message');
+        const popupTitle = document.getElementById('popup-title');
+        const popupIconContainer = document.getElementById('popup-icon-container');
+        const printerPopup = document.getElementById('printer-popup');
+
+        const iconMap = {
+            error: '<i class="fas fa-times-circle text-4xl text-red-500"></i>',
+            info: '<i class="fas fa-info-circle text-4xl text-blue-500"></i>',
+            warning: '<i class="fas fa-exclamation-triangle text-4xl text-yellow-500"></i>'
+        };
+
+        function showMessage(title, message, type = 'error') {
+            popupTitle.textContent = title;
+            popupMessage.textContent = message;
+            popupIconContainer.innerHTML = iconMap[type] || iconMap.info;
+            messagePopup.classList.add('active');
+        }
+
+        function closeAllPopups() {
+            document.querySelectorAll('.popup-overlay').forEach(popup => {
+                popup.classList.remove('active');
+            });
+        }
+
+        document.querySelectorAll('.popup-close-btn').forEach(btn => {
+            btn.addEventListener('click', closeAllPopups);
+        });
+
+        // --- Service Button Event Listeners ---
+        document.getElementById('withdraw-btn').addEventListener('click', () => showMessage('خطأ في السحب', 'لا يوجد رصيد كافي للسحب', 'error'));
+        document.getElementById('reports-btn').addEventListener('click', () => showMessage('التقارير', 'لا يوجد تقارير حالياً', 'info'));
+        document.getElementById('transactions-btn').addEventListener('click', () => showMessage('المعاملات', 'لا توجد معاملات لعرضها', 'info'));
+        document.getElementById('tree-btn').addEventListener('click', () => showMessage('شجرتي', 'لا يوجد أعضاء في شجرتك', 'info'));
+        document.getElementById('loan-btn').addEventListener('click', () => showMessage('خدمة سلفني', 'عفواً، أنت غير مؤهل لهذه الخدمة', 'warning'));
+        document.getElementById('deposits-history-btn').addEventListener('click', () => showMessage('سجل الإيداعات', 'لا توجد عمليات إيداع سابقة', 'info'));
+
+        // Printer button functionality
+        document.getElementById('printer-btn').addEventListener('click', () => {
+            printerPopup.classList.add('active');
+            setTimeout(() => {
+                printerPopup.classList.remove('active');
+            }, 2000); // Close after 2 seconds
+        });
+
+        // Handle direct link service buttons with loading overlay
+        const serviceButtons = document.querySelectorAll('.service-grid .service-button[href]:not([id])'); // Target only direct links
+        const loadingOverlay = document.getElementById('loading-overlay');
+
+        serviceButtons.forEach(button => {
+            button.addEventListener('click', function(event) {
+                const url = this.getAttribute('href');
+                if (url && url !== '#' && url !== 'javascript:void(0);') { // Ensure it's a valid navigation link
+                    event.preventDefault(); // Prevent immediate navigation
+                    loadingOverlay.classList.add('active'); // Show loading overlay
+                    setTimeout(() => {
+                        window.location.href = url; // Navigate after delay
+                    }, 250); // 250ms delay
+                }
+            });
+        });
+    });
+</script>
+
+</body>
+</html>
